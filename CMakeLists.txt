@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(jb2a_package)
+project(jb2a_description)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
