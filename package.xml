@@ -1,0 +1,19 @@
+<package>
+  <name>jb2a_package</name>
+  <version>0.3.0</version>
+
+  <description>This package contains jb2a description.</description>
+  <author email="nicolaypierre.95@gmail.com">Pierre Nicolay</author>
+
+  <maintainer email="nicolaypierre.95@gmail.com">Pierre Nicolay</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslaunch</build_depend>
+  <run_depend>joint_state_publisher</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>rviz</run_depend>
+  <run_depend>xacro</run_depend>
+
+</package>
