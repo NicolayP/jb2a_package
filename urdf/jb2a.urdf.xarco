@@ -1,103 +1,139 @@
 <?xml version="1.0"?>
 <robot name="jb2a" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Xacro properties -->
   <xacro:property name="pi" value="3.1415"/>
   <!-- To increase visibulity in RViz-->
   <xacro:property name="scale" value="10"/>
   <!-- Cange mm measures in meter*scale value -->
-  <xacro:property name="scale_mm" value="${0.001*scale}"/>
-  <xacro:property name="r" value="${pi/2}"/>
-  <xacro:property name="p" value="${pi/2}"/>
-  <xacro:property name="ya" value="${0}"/>
-  <xacro:property name="x" value="${-0.5*scale}"/>
-  <xacro:property name="y" value="${-25*scale}"/>
-  <xacro:property name="z" value="${-8.5*scale}"/>
-  <xacro:property name="angle_lim_low" value="${17/18*pi}"/>
-  <xacro:property name="angle_lim_high" value="${1/18*pi}"/>
-
+  <xacro:property name="scale_mm" value="${1e-3*scale}"/>
+  <xacro:property name="scale_mm2" value="${scale_mm*scale_mm}"/>
+  <xacro:property name="gtoKg" value="1e-3"/>
+  <xacro:property name="angle_lim_low" value="${8/18*pi}"/>
+  <xacro:property name="angle_lim_high" value="${-8/18*pi}"/>
 
   <!-- Materials -->
-    <material name="black">
+  <material name="black">
       <color rgba="0 0 0 1"/>
     </material>
-
-    <material name="white">
+  <material name="white">
       <color rgba="1 1 1 1"/>
     </material>
-
-    <material name="gray">
+  <material name="gray">
       <color rgba="0.5 0.5 0.5 1"/>
     </material>
-
-    <material name="blue">
+  <material name="blue">
       <color rgba="0 0 1 1"/>
     </material>
-
-    <material name="blue_light">
+  <material name="blue_light">
       <color rgba="0 0 0.5 1"/>
     </material>
-
-    <material name="red">
+  <material name="red">
       <color rgba="1 0 0 1"/>
     </material>
-
-    <material name="red_light">
+  <material name="red_light">
       <color rgba="0.5 0 0 1"/>
     </material>
-
-    <material name="green">
+  <material name="green">
       <color rgba="0 1 0 1"/>
     </material>
-
-    <material name="green_light">
+  <material name="green_light">
       <color rgba="0 0.5 0 1"/>
     </material>
-
-    <material name="cyan">
+  <material name="cyan">
       <color rgba="1 1 0 1"/>
     </material>
-
-    <material name="cyan_light">
+  <material name="cyan_light">
       <color rgba="0.5 0.5 0 1"/>
     </material>
-
-    <material name="turcoise">
+  <material name="turcoise">
       <color rgba="0 1 1 1"/>
     </material>
-
-    <material name="turcoise_light">
+  <material name="turcoise_light">
       <color rgba="0 0.5 0.5 1"/>
     </material>
-
-    <material name="pink">
+  <material name="pink">
       <color rgba="1 0 1 1"/>
     </material>
-
-    <material name="pink_light">
+  <material name="pink_light">
       <color rgba="0.5 0 0.5 1"/>
     </material>
   <!-- End Materials -->
 
+  <!-- Fized Frame -->
+    <link name="world"/>
+
+    <joint name="fixed" type="fixed">
+      <parent link="world"/>
+      <child link="base_link"/>
+    </joint>
 
   <!-- Base -->
     <link name="base_link">
+
+      <inertial>
+        <origin xyz="0 0 ${-10.7*scale_mm}" rpy="0 0 0"/>
+        <mass value="${130*gtoKg}" />
+        <inertia  ixx="${143.90*scale_mm2}"
+                  ixy="${0*scale_mm2}"
+                  ixz="${0*scale_mm2}"
+                  iyy="${143.90*scale_mm2}"
+                  iyz="${0*scale_mm2}"
+                  izz="${254.21*scale_mm2}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/base.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/base.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="${pi} 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/base.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi} 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
 
+    <gazebo reference="base_link">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+
     <link name="ball_bearings1">
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${8192.50*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${8192.50*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${16140.0*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
+
+    <gazebo reference="ball_bearings1">
+      <material>Gazebo/Black</material>
+    </gazebo>
 
     <joint name="base_bearings_joint" type="fixed">
       <parent link="base_link"/>
@@ -106,14 +142,36 @@
     </joint>
 
     <link name="ball_bearings2">
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${8192.50*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${8192.50*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${16140.0*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="ball_bearings2">
+      <material>Gazebo/Black</material>
+    </gazebo>
 
     <joint name="base_bearings2_joint" type="fixed">
       <parent link="base_link"/>
@@ -125,32 +183,84 @@
 
   <!-- rotational ensemble -->
     <link name="servo1">
+      <inertial>
+        <origin xyz="${(0.16-10.09)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="${-10.09*scale_mm} 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="${-10.09*scale_mm} 0 0"/>
+      </collision>
     </link>
 
-    <joint name="base_piece100_joint" type="revolute">
+    <gazebo reference="servo1">
+      <material>Gazebo/Black</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
+
+    <joint name="base_servo1_joint" type="revolute">
       <child link="servo1"/>
       <parent link="base_link"/>
-      <origin rpy="${-pi/2} 0 0" xyz="0 0 ${95.5*scale_mm}"/>
+      <origin rpy="${-pi/2} 0 ${pi/2}" xyz="0 0 ${(95.5)*scale_mm}"/>
       <axis xyz="0 1 0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
     </joint>
 
+    <gazebo reference="base_servo1_joint">
+      <implicitSpringDamper>True</implicitSpringDamper>
+    </gazebo>
+
     <link name="piece100">
+      <inertial>
+        <origin xyz="0 ${1.04*scale_mm} ${12.83*scale_mm}" />
+        <mass value="${95*gtoKg}" />
+        <inertia  ixx="${69928.89*scale_mm2*gtoKg}"
+                  ixy="${0.00*scale_mm2*gtoKg}"
+                  ixz="${0.00*scale_mm2*gtoKg}"
+                  iyy="${69691.88*scale_mm2*gtoKg}"
+                  iyz="${-269.74*scale_mm2*gtoKg}"
+                  izz="${124936.91*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece100.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece100.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece100.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="piece100">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="piece100_servo1_joint" type="fixed">
       <parent link="servo1"/>
@@ -159,14 +269,38 @@
     </joint>
 
     <link name="piece11">
+      <inertial>
+        <origin xyz="${-1.15*scale_mm} ${-0.18*scale_mm} ${-0.04*scale_mm}" />
+        <mass value="${20*gtoKg}" />
+        <inertia  ixx="${12919.36*scale_mm2*gtoKg}"
+                  ixy="${-13.18*scale_mm2*gtoKg}"
+                  ixz="${-3.14*scale_mm2*gtoKg}"
+                  iyy="${4390.09*scale_mm2*gtoKg}"
+                  iyz="${-0.59*scale_mm2*gtoKg}"
+                  izz="${16960.47*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece11.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece11.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece11.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="piece11">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="piece100_piece11_joint" type="fixed">
       <parent link="piece100"/>
@@ -175,14 +309,39 @@
     </joint>
 
     <link name="piece11sym">
+      <inertial>
+        <origin xyz="${-1.15*scale_mm} ${-0.18*scale_mm} ${-0.04*scale_mm}" />
+        <mass value="${20*gtoKg}" />
+        <inertia  ixx="${12919.36*scale_mm2*gtoKg}"
+                  ixy="${-13.18*scale_mm2*gtoKg}"
+                  ixz="${-3.14*scale_mm2*gtoKg}"
+                  iyy="${4390.09*scale_mm2*gtoKg}"
+                  iyz="${-0.59*scale_mm2*gtoKg}"
+                  izz="${16960.47*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece11sym.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece11sym.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece11sym.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
+
+    <gazebo reference="piece11sym">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="piece100_piece11sym_joint" type="fixed">
       <parent link="piece100"/>
@@ -191,14 +350,39 @@
     </joint>
 
     <link name="servo2">
+      <inertial>
+        <origin xyz="${(0.16)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
+
+    <gazebo reference="servo2">
+      <material>Gazebo/Black</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="piece11_servo2_joint" type="fixed">
       <parent link="piece11"/>
@@ -207,70 +391,167 @@
     </joint>
 
     <link name="servo3">
+      <inertial>
+        <origin xyz="${(0.16)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="servo3">
+      <material>Gazebo/Black</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="piece11sym_servo3_joint" type="fixed">
       <parent link="piece11sym"/>
       <child link="servo3"/>
       <origin rpy="${pi/2} 0 ${pi/2}" xyz="${2.5*scale_mm} ${0.5*scale_mm} ${-37.5*scale_mm}"/>
     </joint>
+
   <!-- End rotation ensemble -->
 
 
   <!-- Arm1 -->
     <link name="arm1-piece12">
+      <inertial>
+        <origin rpy="${pi/2} ${-pi/2} 0" xyz="${-0.05*scale_mm} ${0.00*scale_mm} ${-76.35*scale_mm}"/>
+        <mass value="${40*gtoKg}" />
+        <inertia  ixx="${7471.11*scale_mm2*gtoKg}"
+                  ixy="${-4.92*scale_mm2*gtoKg}"
+                  ixz="${-46.60*scale_mm2*gtoKg}"
+                  iyy="${173663.35*scale_mm2*gtoKg}"
+                  iyz="${0.27*scale_mm2*gtoKg}"
+                  izz="${180608.09*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece12.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece12.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="green"/>
         <origin rpy="${pi/2} ${-pi/2} 0" xyz="0 0 ${-160*scale_mm}"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece12.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} ${-pi/2} 0" xyz="0 0 ${-160*scale_mm}"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm1-piece12">
+      <material>Gazebo/Green</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="servo2_arm1-piece12_joint" type="revolute">
       <parent link="servo2"/>
       <child link="arm1-piece12"/>
-      <origin rpy="0 ${-pi/2} 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
+      <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
       <axis xyz="0 1 0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
     </joint>
 
     <link name="arm1-piece15">
+      <inertial>
+        <origin rpy="${pi/2} ${pi/2} 0" xyz="${-0.04*scale_mm} ${0.00*scale_mm} ${81.56*scale_mm}" />
+        <mass value="${40*gtoKg}" />
+        <inertia  ixx="${5561.55*scale_mm2*gtoKg}"
+                  ixy="${-3.55*scale_mm2*gtoKg}"
+                  ixz="${-41.58*scale_mm2*gtoKg}"
+                  iyy="${117353.89*scale_mm2*gtoKg}"
+                  iyz="${0.00*scale_mm2*gtoKg}"
+                  izz="${122490.38*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece15.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece15.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="cyan"/>
         <origin rpy="${pi/2} ${pi/2} 0" xyz="0 0 ${160*scale_mm}"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece15.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} ${pi/2} 0" xyz="0 0 ${160*scale_mm}"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm1-piece15">
+      <material>Gazebo/Blue</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="servo3_arm1-piece15_joint" type="revolute">
       <parent link="servo3"/>
       <child link="arm1-piece15"/>
-      <origin rpy="0 ${pi/2} 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
+      <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
       <axis xyz="0 1 0"/>
       <mimic joint="servo2_arm1-piece12_joint" multiplier="-1" offset="0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5" scale="${scale} ${scale} ${scale}"/>
     </joint>
 
     <link name="arm1-piece13-1">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${5*gtoKg}" />
+        <inertia  ixx="${1424.75*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${61.71*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1424.75*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="red"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${65*scale_mm}" radius="${3*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm1-piece13-1">
+      <material>Gazebo/Red</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm1-piece12_arm1-piece13-1_joint" type="fixed">
       <parent link="arm1-piece12"/>
@@ -279,14 +560,38 @@
     </joint>
 
     <link name="arm1-piece13-2">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${5*gtoKg}" />
+        <inertia  ixx="${1424.75*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${61.71*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1424.75*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="red"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${65*scale_mm}" radius="${3*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm1-piece13-2">
+      <material>Gazebo/Red</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm1-piece12_arm1-piece13-2_joint" type="fixed">
       <parent link="arm1-piece12"/>
@@ -295,14 +600,38 @@
     </joint>
 
     <link name="arm1-piece13-3">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${5*gtoKg}" />
+        <inertia  ixx="${1424.75*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${61.71*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1424.75*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="red"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${65*scale_mm}" radius="${3*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm1-piece13-3">
+      <material>Gazebo/Red</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm1-piece12_arm1-piece13-3_joint" type="fixed">
       <parent link="arm1-piece12"/>
@@ -311,14 +640,38 @@
     </joint>
 
     <link name="radialBearing1">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${10*gtoKg}" />
+        <inertia  ixx="${278.13*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${278.13*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${496.25*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="radialBearing1">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm1-piece15_radialBearing1_joint" type="fixed">
       <parent link="arm1-piece15"/>
@@ -327,51 +680,125 @@
     </joint>
 
     <link name="servo4">
+      <inertial>
+        <origin xyz="${(0.16)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="servo4">
+      <material>Gazebo/Black</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm1-piece12_servo4_joint" type="fixed">
       <parent link="arm1-piece12"/>
       <child link="servo4"/>
       <origin rpy="${pi} ${-pi/2} 0" xyz="0 ${(60-23.5)*scale_mm} ${-170.09*scale_mm}"/>
     </joint>
+
   <!-- End Arm1 -->
 
 
   <!-- Arm2 -->
     <link name="arm2-piece16">
+      <inertial>
+        <origin rpy="${pi/2} 0 0" xyz="${(-120+61.38)*scale_mm} ${0*scale_mm} ${-0.04*scale_mm}" />
+        <mass value="${35*gtoKg}" />
+        <inertia  ixx="${4855.15*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${-34.37*scale_mm2*gtoKg}"
+                  iyy="${64452.74*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${68936.39*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece16.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece16.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="pink"/>
         <origin rpy="${pi/2} 0 0" xyz="${-120*scale_mm} 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece16.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="${-120*scale_mm} 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm2-piece16">
+      <material>Gazebo/Indigo</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="servo4_arm2-piece16_joint" type="revolute">
       <parent link="servo4"/>
       <child link="arm2-piece16"/>
-      <origin rpy="0 ${-pi/2} 0" xyz="${10.09*scale_mm} ${(39.5+10)*scale_mm} ${0*scale_mm}"/>
+      <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(39.5+10)*scale_mm} ${0*scale_mm}"/>
       <axis xyz="0 1 0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
     </joint>
 
     <link name="radialBearing3">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${10*gtoKg}" />
+        <inertia  ixx="${278.13*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${278.13*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${496.25*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
+
+    <gazebo reference="radialBearing3">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm2-piece16_radialBearing3_joint" type="fixed">
       <parent link="arm2-piece16"/>
@@ -380,14 +807,38 @@
     </joint>
 
     <link name="radialBearing2">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${10*gtoKg}" />
+        <inertia  ixx="${278.13*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${278.13*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${496.25*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="radialBearing2">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="radialBearing2_radialBearing1_joint" type="revolute">
       <parent link="radialBearing1"/>
@@ -399,30 +850,80 @@
     </joint>
 
     <link name="arm2-piece14">
+      <inertial>
+        <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0 ${(120-64.05)*scale_mm}" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${4703.38*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${-2.07*scale_mm2*gtoKg}"
+                  iyy="${54489.25*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${58871.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece14.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece14.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="turcoise"/>
         <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0 ${120*scale_mm}"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece14.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0 ${120*scale_mm}"/>
+      </collision>
+
     </link>
 
-    <joint name="arm1-piece15_radialBearing2_joint" type="fixed">
+    <gazebo reference="arm2-piece14">
+      <material>Gazebo/Turquoise</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
+
+    <joint name="arm1-piece14_radialBearing2_joint" type="fixed">
       <parent link="radialBearing2"/>
       <child link="arm2-piece14"/>
-      <origin rpy="0 0 0" xyz="0 ${0*scale_mm} 0"/>
+      <origin rpy="0 ${pi/2} 0" xyz="0 ${0*scale_mm} 0"/>
     </joint>
 
     <link name="servo5">
+      <inertial>
+        <origin xyz="${(0.16)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
+
+    <gazebo reference="servo5">
+      <material>Gazebo/Black</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm2-piece14_servo5_joint" type="fixed">
       <parent link="arm2-piece14"/>
@@ -431,14 +932,38 @@
     </joint>
 
     <link name="arm2-piece13-1">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${5*gtoKg}" />
+        <inertia  ixx="${1424.75*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${61.71*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1424.75*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="red"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${65*scale_mm}" radius="${3*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm2-piece13-1">
+      <material>Gazebo/Red</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm2-piece14_arm2-piece13-1_joint" type="fixed">
       <parent link="arm2-piece14"/>
@@ -447,14 +972,38 @@
     </joint>
 
     <link name="arm2-piece13-2">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${5*gtoKg}" />
+        <inertia  ixx="${1424.75*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${61.71*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1424.75*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="red"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${65*scale_mm}" radius="${3*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm2-piece13-2">
+      <material>Gazebo/Red</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm2-piece14_arm2-piece13-2_joint" type="fixed">
       <parent link="arm2-piece14"/>
@@ -466,67 +1015,164 @@
 
   <!-- Arm3 -->
     <link name="arm3-piece17">
+      <inertial>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="${23.15*scale_mm} ${0*scale_mm} ${-0.27*scale_mm}" />
+        <mass value="${17*gtoKg}" />
+        <inertia  ixx="${2387.42*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${78.26*scale_mm2*gtoKg}"
+                  iyy="${8941.61*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${11160.24*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece17.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece17.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="pink_light"/>
         <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece17.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm3-piece17">
+      <material>Gazebo/PurpleGlow</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="servo5_arm3-piece17_joint" type="revolute">
       <parent link="servo5"/>
       <child link="arm3-piece17"/>
-      <origin rpy="0 ${-pi/2} 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
+      <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
       <axis xyz="0 1 0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
     </joint>
 
     <link name="radialBearing4">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${278.13*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${278.13*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${496.25*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="gray"/>
         <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="radialBearing4">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="radialBearing4_radialBearing3_joint" type="revolute">
       <parent link="radialBearing3"/>
       <child link="radialBearing4"/>
-      <origin rpy="0 ${pi/2} 0" xyz="0 ${12*scale_mm} 0"/>
+      <origin rpy="0 ${pi/2} 0" xyz="0 ${12.5*scale_mm} 0"/>
       <axis xyz="0 1 0"/>
       <mimic joint="servo5_arm3-piece17_joint" multiplier="-1" offset="0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
     </joint>
 
     <link name="arm3-piece18">
+      <inertial>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="${-24.25*scale_mm} ${0*scale_mm} ${-0.25*scale_mm}" />
+        <mass value="${17*gtoKg}" />
+        <inertia  ixx="${2482.79*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${-91.55*scale_mm2*gtoKg}"
+                  iyy="${8895.24*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${11204.45*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece18.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece18.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="cyan_light"/>
         <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece18.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="arm3-piece18">
+      <material>Gazebo/Grey</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="radialBearing4_arm3-piece18_joint" type="fixed">
       <parent link="radialBearing4"/>
       <child link="arm3-piece18"/>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 ${-pi/2} 0" xyz="0 0 0"/>
     </joint>
 
     <link name="arm3-piece19">
+      <inertial>
+        <origin xyz="${10*scale_mm} ${0*scale_mm} ${0.01*scale_mm}" />
+        <mass value="${22*gtoKg}" />
+        <inertia  ixx="${4235.92*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${19380.83*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${21869.12*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Piece19.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Piece19.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="red_light"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece19.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
     </link>
+
+    <gazebo reference="arm3-piece18">
+      <material>Gazebo/Blue</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm3-piece17_arm3-piece19_joint" type="fixed">
       <parent link="arm3-piece17"/>
@@ -535,14 +1181,38 @@
     </joint>
 
     <link name="servo6">
+      <inertial>
+        <origin xyz="${(0.16)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
       <visual>
         <geometry>
-          <mesh filename="package://my_urdf_tutorial/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
         </geometry>
         <material name="black"/>
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
     </link>
+
+    <gazebo reference="servo6">
+      <material>Gazebo/Black</material>
+      <selfCollide>True</selfCollide>
+      <turnGravityOff>False</turnGravityOff>
+    </gazebo>
 
     <joint name="arm2-piece14_servo6_joint" type="fixed">
       <parent link="arm3-piece19"/>
@@ -552,15 +1222,39 @@
    <!-- End Arm4 -->
 
    <!-- Simple hand -->
+
     <link name="fakeHand">
-       <visual>
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0.25}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${1/2*0.5*0.5*6e-2 + 1/4*0.2*0.2*6e-2}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${1/2*0.5*0.5*6e-2 + 1/4*0.2*0.2*6e-2}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1/2*0.2*0.2*6e-2}" />
+      </inertial>
+
+      <visual>
          <geometry>
            <cylinder length="0.5" radius="0.2" scale="${scale} ${scale} ${scale}"/>
          </geometry>
          <material name="gray"/>
          <origin rpy="0 0 0" xyz="0 0 ${20*scale_mm}"/>
        </visual>
+
+      <collision>
+         <geometry>
+           <cylinder length="0.5" radius="0.2" scale="${scale} ${scale} ${scale}"/>
+         </geometry>
+         <origin rpy="0 0 0" xyz="0 0 ${20*scale_mm}"/>
+       </collision>
+
      </link>
+
+    <gazebo reference="fakeHand">
+       <material>Gazebo/Yellow</material>
+     </gazebo>
 
     <joint name="servo6-fakeHand" type="revolute">
        <parent link="servo6"/>
@@ -573,7 +1267,9 @@
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/</robotNamespace>
+      <robotNamespace>/robot_description</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
     </plugin>
   </gazebo>
 
