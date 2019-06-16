@@ -1,7 +1,0 @@
-<launch>
-  <!-- send jb2a urdf to param server -->
-  <param name="/robot_description" command="/opt/ros/kinetic/share/xacro/xacro.py $(find jb2a_description)/urdf/jb2a.urdf.xarco" />
-
-  <!-- push jb2a_description to fatory and spawn it in gazebo -->
-  <node name="spawn_jb2a" pkg="gazebo_ros" type="spawn_model" args="-urdf -param /robot_description -model jb2a_model" respawn="false" output="screen"/>
-</launch>
