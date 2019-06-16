@@ -54,10 +54,6 @@
 
     </link>
 
-    <gazebo reference="base_link">
-      <material>Gazebo/Grey</material>
-    </gazebo>
-
     <link name="ball_bearings1">
       <inertial>
         <origin xyz="0 0 0" />
@@ -86,10 +82,6 @@
       </collision>
 
     </link>
-
-    <gazebo reference="ball_bearings1">
-      <material>Gazebo/Black</material>
-    </gazebo>
 
     <joint name="base_bearings_joint" type="fixed">
       <parent link="base_link"/>
@@ -124,10 +116,6 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="ball_bearings2">
-      <material>Gazebo/Black</material>
-    </gazebo>
 
     <joint name="base_bearings2_joint" type="fixed">
       <parent link="base_link"/>
@@ -166,12 +154,6 @@
       </collision>
     </link>
 
-    <gazebo reference="servo1">
-      <material>Gazebo/Black</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="base_servo1_joint" type="revolute">
       <child link="servo1"/>
       <parent link="base_link"/>
@@ -179,10 +161,6 @@
       <axis xyz="0 1 0"/>
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
     </joint>
-
-    <gazebo reference="base_servo1_joint">
-      <implicitSpringDamper>True</implicitSpringDamper>
-    </gazebo>
 
     <link name="piece100">
       <inertial>
@@ -211,12 +189,6 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="piece100">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="piece100_servo1_joint" type="fixed">
       <parent link="servo1"/>
@@ -251,12 +223,6 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="piece11">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="piece100_piece11_joint" type="fixed">
       <parent link="piece100"/>
@@ -293,12 +259,6 @@
 
     </link>
 
-    <gazebo reference="piece11sym">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="piece100_piece11sym_joint" type="fixed">
       <parent link="piece100"/>
       <child link="piece11sym"/>
@@ -334,12 +294,6 @@
 
     </link>
 
-    <gazebo reference="servo2">
-      <material>Gazebo/Black</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="piece11_servo2_joint" type="fixed">
       <parent link="piece11"/>
       <child link="servo2"/>
@@ -373,12 +327,6 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="servo3">
-      <material>Gazebo/Black</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="piece11sym_servo3_joint" type="fixed">
       <parent link="piece11sym"/>
@@ -418,12 +366,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm1-piece12">
-      <material>Gazebo/Green</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="servo2_arm1-piece12_joint" type="revolute">
       <parent link="servo2"/>
       <child link="arm1-piece12"/>
@@ -459,12 +401,6 @@
         <origin rpy="${pi/2} ${pi/2} 0" xyz="0 0 ${160*scale_mm}"/>
       </collision>
     </link>
-
-    <gazebo reference="arm1-piece15">
-      <material>Gazebo/Blue</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="servo3_arm1-piece15_joint" type="revolute">
       <parent link="servo3"/>
@@ -503,12 +439,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm1-piece13-1">
-      <material>Gazebo/Red</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm1-piece12_arm1-piece13-1_joint" type="fixed">
       <parent link="arm1-piece12"/>
       <child link="arm1-piece13-1"/>
@@ -542,12 +472,6 @@
         <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="arm1-piece13-2">
-      <material>Gazebo/Red</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="arm1-piece12_arm1-piece13-2_joint" type="fixed">
       <parent link="arm1-piece12"/>
@@ -583,12 +507,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm1-piece13-3">
-      <material>Gazebo/Red</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm1-piece12_arm1-piece13-3_joint" type="fixed">
       <parent link="arm1-piece12"/>
       <child link="arm1-piece13-3"/>
@@ -623,12 +541,6 @@
       </collision>
     </link>
 
-    <gazebo reference="radialBearing1">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm1-piece15_radialBearing1_joint" type="fixed">
       <parent link="arm1-piece15"/>
       <child link="radialBearing1"/>
@@ -662,12 +574,6 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="servo4">
-      <material>Gazebo/Black</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="arm1-piece12_servo4_joint" type="fixed">
       <parent link="arm1-piece12"/>
@@ -707,12 +613,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm2-piece16">
-      <material>Gazebo/Indigo</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="servo4_arm2-piece16_joint" type="revolute">
       <parent link="servo4"/>
       <child link="arm2-piece16"/>
@@ -750,12 +650,6 @@
 
     </link>
 
-    <gazebo reference="radialBearing3">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm2-piece16_radialBearing3_joint" type="fixed">
       <parent link="arm2-piece16"/>
       <child link="radialBearing3"/>
@@ -789,12 +683,6 @@
         <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="radialBearing2">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="radialBearing2_radialBearing1_joint" type="revolute">
       <parent link="radialBearing1"/>
@@ -834,12 +722,6 @@
 
     </link>
 
-    <gazebo reference="arm2-piece14">
-      <material>Gazebo/Turquoise</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm1-piece14_radialBearing2_joint" type="fixed">
       <parent link="radialBearing2"/>
       <child link="arm2-piece14"/>
@@ -875,12 +757,6 @@
 
     </link>
 
-    <gazebo reference="servo5">
-      <material>Gazebo/Black</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm2-piece14_servo5_joint" type="fixed">
       <parent link="arm2-piece14"/>
       <child link="servo5"/>
@@ -915,12 +791,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm2-piece13-1">
-      <material>Gazebo/Red</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm2-piece14_arm2-piece13-1_joint" type="fixed">
       <parent link="arm2-piece14"/>
       <child link="arm2-piece13-1"/>
@@ -954,12 +824,6 @@
         <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="arm2-piece13-2">
-      <material>Gazebo/Red</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="arm2-piece14_arm2-piece13-2_joint" type="fixed">
       <parent link="arm2-piece14"/>
@@ -998,12 +862,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm3-piece17">
-      <material>Gazebo/PurpleGlow</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="servo5_arm3-piece17_joint" type="revolute">
       <parent link="servo5"/>
       <child link="arm3-piece17"/>
@@ -1039,12 +897,6 @@
         <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="radialBearing4">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="radialBearing4_radialBearing3_joint" type="revolute">
       <parent link="radialBearing3"/>
@@ -1083,12 +935,6 @@
       </collision>
     </link>
 
-    <gazebo reference="arm3-piece18">
-      <material>Gazebo/Grey</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="radialBearing4_arm3-piece18_joint" type="fixed">
       <parent link="radialBearing4"/>
       <child link="arm3-piece18"/>
@@ -1124,12 +970,6 @@
 
     </link>
 
-    <gazebo reference="arm3-piece18">
-      <material>Gazebo/Blue</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
-
     <joint name="arm3-piece17_arm3-piece19_joint" type="fixed">
       <parent link="arm3-piece17"/>
       <child link="arm3-piece19"/>
@@ -1163,12 +1003,6 @@
         <origin rpy="0 0 0" xyz="0 0 0"/>
       </collision>
     </link>
-
-    <gazebo reference="servo6">
-      <material>Gazebo/Black</material>
-      <selfCollide>True</selfCollide>
-      <turnGravityOff>False</turnGravityOff>
-    </gazebo>
 
     <joint name="arm2-piece14_servo6_joint" type="fixed">
       <parent link="arm3-piece19"/>
@@ -1208,10 +1042,6 @@
 
      </link>
 
-    <gazebo reference="fakeHand">
-       <material>Gazebo/Yellow</material>
-     </gazebo>
-
     <joint name="servo6-fakeHand" type="revolute">
        <parent link="servo6"/>
        <child link="fakeHand"/>
@@ -1221,12 +1051,5 @@
      </joint>
    <!-- End hand -->
 
-  <gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/robot_description</robotNamespace>
-      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
-    </plugin>
-  </gazebo>
 
 </robot>

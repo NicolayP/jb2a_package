@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/jb2a</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <!-- Base -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- ball bearing 1 -->
+  <gazebo reference="ball_bearings1">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- ball bearing 2 -->
+  <gazebo reference="ball_bearings2">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Servo 1 -->
+  <gazebo reference="servo1">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- piece 100 -->
+  <gazebo reference="piece100">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- piece 11 -->
+  <gazebo reference="piece11">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- piece 11 symetry -->
+  <gazebo reference="piece11sym">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Servo 2 -->
+  <gazebo reference="servo2">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Servo 3 -->
+  <gazebo reference="servo3">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm1 piece 12 -->
+  <gazebo reference="arm1-piece12">
+    <material>Gazebo/Green</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm1 piece 15 -->
+  <gazebo reference="arm1-piece15">
+    <material>Gazebo/Blue</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm1 piece 13-1 -->
+  <gazebo reference="arm1-piece13-1">
+    <material>Gazebo/Red</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm1 piece 13-2 -->
+  <gazebo reference="arm1-piece13-2">
+    <material>Gazebo/Red</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm1 piece 13-3 -->
+  <gazebo reference="arm1-piece13-3">
+    <material>Gazebo/Red</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- radialBearing 1 -->
+  <gazebo reference="radialBearing1">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Servo 4 -->
+  <gazebo reference="servo4">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm2 piece16 -->
+  <gazebo reference="arm2-piece16">
+    <material>Gazebo/Indigo</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- radialBearing 2 -->
+  <gazebo reference="radialBearing2">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- radialBearing 3 -->
+  <gazebo reference="radialBearing3">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm2 piece14 -->
+  <gazebo reference="arm2-piece14">
+    <material>Gazebo/Turquoise</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Servo 5 -->
+  <gazebo reference="servo5">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm2 piece 13-1 -->
+  <gazebo reference="arm2-piece13-1">
+    <material>Gazebo/Red</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm2 piece 13-2 -->
+  <gazebo reference="arm2-piece13-2">
+    <material>Gazebo/Red</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm3 piece17 -->
+  <gazebo reference="arm3-piece17">
+    <material>Gazebo/PurpleGlow</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- radialBearing4 -->
+  <gazebo reference="radialBearing4">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm3 piece18 -->
+  <gazebo reference="arm3-piece19">
+    <material>Gazebo/Blue</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Arm3 piece18-->
+  <gazebo reference="arm3-piece18">
+    <material>Gazebo/Grey</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Servo 6 -->
+  <gazebo reference="servo6">
+    <material>Gazebo/Black</material>
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+  <!-- Fake hand -->
+  <gazebo reference="fakeHand">
+     <material>Gazebo/Yellow</material>
+     <selfCollide>True</selfCollide>
+     <turnGravityOff>False</turnGravityOff>
+  </gazebo>
+
+</robot>
