@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="jb2a" xmlns:xacro="http://ros.org/wiki/xacro">
   <!-- Xacro properties -->
-  <xacro:property name="pi" value="3.1415"/>
+  <xacro:property name="pi" value="3.1415926535897931"/>
   <!-- To increase visibulity in RViz-->
   <xacro:property name="scale" value="10"/>
   <!-- Cange mm measures in meter*scale value -->
@@ -11,54 +11,10 @@
   <xacro:property name="angle_lim_low" value="${8/18*pi}"/>
   <xacro:property name="angle_lim_high" value="${-8/18*pi}"/>
 
-  <!-- Materials -->
-  <material name="black">
-      <color rgba="0 0 0 1"/>
-    </material>
-  <material name="white">
-      <color rgba="1 1 1 1"/>
-    </material>
-  <material name="gray">
-      <color rgba="0.5 0.5 0.5 1"/>
-    </material>
-  <material name="blue">
-      <color rgba="0 0 1 1"/>
-    </material>
-  <material name="blue_light">
-      <color rgba="0 0 0.5 1"/>
-    </material>
-  <material name="red">
-      <color rgba="1 0 0 1"/>
-    </material>
-  <material name="red_light">
-      <color rgba="0.5 0 0 1"/>
-    </material>
-  <material name="green">
-      <color rgba="0 1 0 1"/>
-    </material>
-  <material name="green_light">
-      <color rgba="0 0.5 0 1"/>
-    </material>
-  <material name="cyan">
-      <color rgba="1 1 0 1"/>
-    </material>
-  <material name="cyan_light">
-      <color rgba="0.5 0.5 0 1"/>
-    </material>
-  <material name="turcoise">
-      <color rgba="0 1 1 1"/>
-    </material>
-  <material name="turcoise_light">
-      <color rgba="0 0.5 0.5 1"/>
-    </material>
-  <material name="pink">
-      <color rgba="1 0 1 1"/>
-    </material>
-  <material name="pink_light">
-      <color rgba="0.5 0 0.5 1"/>
-    </material>
-  <!-- End Materials -->
-
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find jb2a_description)/urdf/jb2a.gazebo" />
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find jb2a_description)/urdf/materials.xacro" />
   <!-- Fized Frame -->
     <link name="world"/>
 
