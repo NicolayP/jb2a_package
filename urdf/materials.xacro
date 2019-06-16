@@ -9,7 +9,7 @@
       <color rgba="1 1 1 1"/>
   </material>
 
-  <material name="gray">
+  <material name="grey">
       <color rgba="0.5 0.5 0.5 1"/>
   </material>
 
@@ -60,7 +60,7 @@
   <material name="pink_light">
       <color rgba="0.5 0 0.5 1"/>
   </material>
-  
+
   <!-- End Materials -->
 
 </robot>

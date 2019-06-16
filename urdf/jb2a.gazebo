@@ -1,5 +1,59 @@
 <?xml version="1.0"?>
-<robot>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="settings">
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </xacro:macro>
+
+  <xacro:macro name="black" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Black</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="red" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Red</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="grey" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Grey</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="blue" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Blue</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="green" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Green</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="yellow" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Yellow</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="orange" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Orange</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
 
   <!-- ros_control plugin -->
   <gazebo>
@@ -11,206 +65,53 @@
   </gazebo>
 
   <!-- Base -->
-  <gazebo reference="base_link">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <xacro:grey name="base_link"/>
 
-  <!-- ball bearing 1 -->
-  <gazebo reference="ball_bearings1">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
 
-  <!-- ball bearing 2 -->
-  <gazebo reference="ball_bearings2">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- ball bearing -->
+  <xacro:black name="ball_bearings1"/>
+  <xacro:black name="ball_bearings2"/>
 
-  <!-- Servo 1 -->
-  <gazebo reference="servo1">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- Servos -->
+  <xacro:black name="servo1"/>
+  <xacro:black name="servo2"/>
+  <xacro:black name="servo3"/>
+  <xacro:black name="servo4"/>
+  <xacro:black name="servo5"/>
+  <xacro:black name="servo6"/>
 
-  <!-- piece 100 -->
-  <gazebo reference="piece100">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- Radial Bearings -->
+  <xacro:grey name="radialBearing1"/>
+  <xacro:grey name="radialBearing2"/>
+  <xacro:grey name="radialBearing3"/>
+  <xacro:grey name="radialBearing4"/>
 
-  <!-- piece 11 -->
-  <gazebo reference="piece11">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- Piece 13 -->
+  <xacro:red name="arm1-piece13-1"/>
+  <xacro:red name="arm1-piece13-2"/>
+  <xacro:red name="arm1-piece13-3"/>
+  <xacro:red name="arm2-piece13-1"/>
+  <xacro:red name="arm2-piece13-2"/>
 
-  <!-- piece 11 symetry -->
-  <gazebo reference="piece11sym">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- rotation ensemble -->
+  <xacro:grey name="piece100"/>
+  <xacro:grey name="piece11"/>
+  <xacro:grey name="piece11sym"/>
 
-  <!-- Servo 2 -->
-  <gazebo reference="servo2">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- Arm 1 -->
+  <xacro:green name="arm1-piece12"/>
+  <xacro:green name="arm1-piece15"/>
 
-  <!-- Servo 3 -->
-  <gazebo reference="servo3">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- Arm 2 -->
+  <xacro:orange name="arm2-piece14"/>
+  <xacro:orange name="arm2-piece16"/>
 
-  <!-- Arm1 piece 12 -->
-  <gazebo reference="arm1-piece12">
-    <material>Gazebo/Green</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm1 piece 15 -->
-  <gazebo reference="arm1-piece15">
-    <material>Gazebo/Blue</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm1 piece 13-1 -->
-  <gazebo reference="arm1-piece13-1">
-    <material>Gazebo/Red</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm1 piece 13-2 -->
-  <gazebo reference="arm1-piece13-2">
-    <material>Gazebo/Red</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm1 piece 13-3 -->
-  <gazebo reference="arm1-piece13-3">
-    <material>Gazebo/Red</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- radialBearing 1 -->
-  <gazebo reference="radialBearing1">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Servo 4 -->
-  <gazebo reference="servo4">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm2 piece16 -->
-  <gazebo reference="arm2-piece16">
-    <material>Gazebo/Indigo</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- radialBearing 2 -->
-  <gazebo reference="radialBearing2">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- radialBearing 3 -->
-  <gazebo reference="radialBearing3">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm2 piece14 -->
-  <gazebo reference="arm2-piece14">
-    <material>Gazebo/Turquoise</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Servo 5 -->
-  <gazebo reference="servo5">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm2 piece 13-1 -->
-  <gazebo reference="arm2-piece13-1">
-    <material>Gazebo/Red</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm2 piece 13-2 -->
-  <gazebo reference="arm2-piece13-2">
-    <material>Gazebo/Red</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm3 piece17 -->
-  <gazebo reference="arm3-piece17">
-    <material>Gazebo/PurpleGlow</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- radialBearing4 -->
-  <gazebo reference="radialBearing4">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm3 piece18 -->
-  <gazebo reference="arm3-piece19">
-    <material>Gazebo/Blue</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Arm3 piece18-->
-  <gazebo reference="arm3-piece18">
-    <material>Gazebo/Grey</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
-
-  <!-- Servo 6 -->
-  <gazebo reference="servo6">
-    <material>Gazebo/Black</material>
-    <selfCollide>True</selfCollide>
-    <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <!-- Arm 3 -->
+  <xacro:blue name="arm3-piece17"/>
+  <xacro:blue name="arm3-piece19"/>
+  <xacro:blue name="arm3-piece18"/>
 
   <!-- Fake hand -->
-  <gazebo reference="fakeHand">
-     <material>Gazebo/Yellow</material>
-     <selfCollide>True</selfCollide>
-     <turnGravityOff>False</turnGravityOff>
-  </gazebo>
+  <xacro:yellow name="fakeHand"/>
 
 </robot>
