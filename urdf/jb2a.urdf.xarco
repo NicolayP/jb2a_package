@@ -1,0 +1,771 @@
+<?xml version="1.0"?>
+<robot name="jb2a" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Xacro properties -->
+  <xacro:property name="pi" value="3.1415926535897931"/>
+  <!-- To increase visibulity in RViz-->
+  <xacro:property name="scale" value="10"/>
+  <!-- Cange mm measures in meter*scale value -->
+  <xacro:property name="scale_mm" value="${1e-3*scale}"/>
+  <xacro:property name="scale_mm2" value="${scale_mm*scale_mm}"/>
+  <xacro:property name="gtoKg" value="1e-3"/>
+  <xacro:property name="angle_lim_low" value="${8/18*pi}"/>
+  <xacro:property name="angle_lim_high" value="${-8/18*pi}"/>
+
+  <!-- Used for every servo except the first one as it is the child in the joint relation -->
+  <xacro:macro name="servo" params="name">
+    <link name="${name}">
+      <inertial>
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="black"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="servo_joint" params="parent child offset:=37.5">
+    <joint name="${parent}_${child}_joint" type="revolute">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(offset+10)*scale_mm} ${0*scale_mm}"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
+      <dynamics friction="0.7"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="servo_mimic" params="parent child mimic multiplier">
+    <joint name="${parent}_${child}_joint" type="revolute">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(37.5+10)*scale_mm} ${0*scale_mm}"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
+      <mimic joint="${mimic}" multiplier="${multiplier}" offset="0"/>
+      <dynamics friction="0.7"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="piece13" params="name">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${5*gtoKg}" />
+        <inertia  ixx="${1424.75*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${61.71*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1424.75*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece13.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="red"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <cylinder length="${65*scale_mm}" radius="${3*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="radialBearing" params="name">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="${0*scale_mm} ${0*scale_mm} ${0*scale_mm}" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${278.13*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${278.13*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${496.25*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="grey"/>
+        <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/radialBearing.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="-${pi/2} 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="radialBearing_joint" params="parent child mimic multiplier offset=10">
+    <joint name="${parent}_${child}_joint" type="revolute">
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <origin rpy="0 ${-pi/2} 0" xyz="0 ${offset*scale_mm} 0"/>
+      <axis xyz="0 1 0"/>
+      <mimic joint="${mimic}" multiplier="${multiplier}" offset="0"/>
+      <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
+      <dynamics friction="0.7"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find jb2a_description)/urdf/jb2a.gazebo" />
+  <!-- Import Rviz colors -->
+  <xacro:include filename="$(find jb2a_description)/urdf/materials.xacro" />
+
+  <!-- Fixed Frame -->
+    <link name="world"/>
+
+    <joint name="fixed" type="fixed">
+      <parent link="world"/>
+      <child link="base_link"/>
+    </joint>
+
+  <!-- Base -->
+    <link name="base_link">
+
+      <inertial>
+        <origin xyz="0 0 ${-10.7*scale_mm}" rpy="0 0 0"/>
+        <mass value="${130*gtoKg}" />
+        <inertia  ixx="${143.90*scale_mm2}"
+                  ixy="${0*scale_mm2}"
+                  ixz="${0*scale_mm2}"
+                  iyy="${143.90*scale_mm2}"
+                  iyz="${0*scale_mm2}"
+                  izz="${254.21*scale_mm2}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/base.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="grey"/>
+        <origin rpy="${pi} 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/base.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi} 0 0" xyz="0 0 0"/>
+      </collision>
+
+    </link>
+
+    <link name="ball_bearings1">
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${8192.50*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${8192.50*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${16140.0*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="black"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
+    </link>
+
+    <joint name="base_bearings_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="ball_bearings1"/>
+      <origin rpy="0 0 0" xyz="0 0 ${38.5*scale_mm}"/>
+    </joint>
+
+    <link name="ball_bearings2">
+      <inertial>
+        <origin xyz="0 0 0" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${8192.50*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${8192.50*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${16140.0*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="black"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/bearings.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>
+
+    <joint name="base_bearings2_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="ball_bearings2"/>
+      <origin rpy="0 0 0" xyz="0 0 ${45.5*scale_mm}"/>
+    </joint>
+  <!-- End Base -->
+
+
+  <!-- rotational ensemble -->
+    <link name="servo1">
+      <inertial>
+        <origin xyz="${(0.16-10.09)*scale_mm} ${19.77*scale_mm} ${0*scale_mm}" />
+        <mass value="${60*gtoKg}" />
+        <inertia  ixx="${9485.10*scale_mm2*gtoKg}"
+                  ixy="${85.09*scale_mm2*gtoKg}"
+                  ixz="${0.03*scale_mm2*gtoKg}"
+                  iyy="${10669.07*scale_mm2*gtoKg}"
+                  iyz="${-0.04*scale_mm2*gtoKg}"
+                  izz="${16223.61*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="black"/>
+        <origin rpy="0 0 0" xyz="${-10.09*scale_mm} 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Servo.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="${-10.09*scale_mm} 0 0"/>
+      </collision>
+    </link>
+
+    <joint name="base_servo1_joint" type="revolute">
+      <parent link="base_link"/>
+      <child link="servo1"/>
+      <origin rpy="${-pi/2} 0 ${pi/2}" xyz="0 0 ${(95.5)*scale_mm}"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
+      <dynamics friction="0.7"/>
+    </joint>
+
+    <link name="piece100">
+      <inertial>
+        <origin xyz="0 ${1.04*scale_mm} ${12.83*scale_mm}" />
+        <mass value="${95*gtoKg}" />
+        <inertia  ixx="${69928.89*scale_mm2*gtoKg}"
+                  ixy="${0.00*scale_mm2*gtoKg}"
+                  ixz="${0.00*scale_mm2*gtoKg}"
+                  iyy="${69691.88*scale_mm2*gtoKg}"
+                  iyz="${-269.74*scale_mm2*gtoKg}"
+                  izz="${124936.91*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece100.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="grey"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece100.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>
+
+    <joint name="piece100_servo1_joint" type="fixed">
+      <parent link="servo1"/>
+      <child link="piece100"/>
+      <origin rpy="${-pi/2} ${-pi/2} 0" xyz="0 ${32.5*scale_mm} 0"/>
+    </joint>
+
+    <link name="piece11">
+      <inertial>
+        <origin xyz="${-1.15*scale_mm} ${-0.18*scale_mm} ${-0.04*scale_mm}" />
+        <mass value="${20*gtoKg}" />
+        <inertia  ixx="${12919.36*scale_mm2*gtoKg}"
+                  ixy="${-13.18*scale_mm2*gtoKg}"
+                  ixz="${-3.14*scale_mm2*gtoKg}"
+                  iyy="${4390.09*scale_mm2*gtoKg}"
+                  iyz="${-0.59*scale_mm2*gtoKg}"
+                  izz="${16960.47*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece11.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="grey"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece11.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+    </link>
+
+    <joint name="piece100_piece11_joint" type="fixed">
+      <parent link="piece100"/>
+      <child link="piece11"/>
+      <origin rpy="0 ${pi/2} 0" xyz="${40*scale_mm} 0 ${-22.5*scale_mm}"/>
+    </joint>
+
+    <link name="piece11sym">
+      <inertial>
+        <origin xyz="${-1.15*scale_mm} ${-0.18*scale_mm} ${-0.04*scale_mm}" />
+        <mass value="${20*gtoKg}" />
+        <inertia  ixx="${12919.36*scale_mm2*gtoKg}"
+                  ixy="${-13.18*scale_mm2*gtoKg}"
+                  ixz="${-3.14*scale_mm2*gtoKg}"
+                  iyy="${4390.09*scale_mm2*gtoKg}"
+                  iyz="${-0.59*scale_mm2*gtoKg}"
+                  izz="${16960.47*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece11sym.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="grey"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece11sym.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
+    </link>
+
+    <joint name="piece100_piece11sym_joint" type="fixed">
+      <parent link="piece100"/>
+      <child link="piece11sym"/>
+      <origin rpy="0 ${pi/2} 0" xyz="${-40*scale_mm} 0 ${-22.5*scale_mm}"/>
+    </joint>
+
+    <xacro:servo name="servo2"/>
+
+    <joint name="piece11_servo2_joint" type="fixed">
+      <parent link="piece11"/>
+      <child link="servo2"/>
+      <origin rpy="${-pi/2} 0 ${pi/2}" xyz="${2.5*scale_mm} ${0.5*scale_mm} ${37.5*scale_mm}"/>
+    </joint>
+
+    <xacro:servo name="servo3"/>
+
+    <joint name="piece11sym_servo3_joint" type="fixed">
+      <parent link="piece11sym"/>
+      <child link="servo3"/>
+      <origin rpy="${pi/2} 0 ${pi/2}" xyz="${2.5*scale_mm} ${0.5*scale_mm} ${-37.5*scale_mm}"/>
+    </joint>
+
+  <!-- End rotation ensemble -->
+
+
+  <!-- Arm1 -->
+    <link name="arm1-piece12">
+      <inertial>
+        <origin rpy="${pi/2} ${-pi/2} 0" xyz="${-0.05*scale_mm} ${0.00*scale_mm} ${-76.35*scale_mm}"/>
+        <mass value="${40*gtoKg}" />
+        <inertia  ixx="${7471.11*scale_mm2*gtoKg}"
+                  ixy="${-4.92*scale_mm2*gtoKg}"
+                  ixz="${-46.60*scale_mm2*gtoKg}"
+                  iyy="${173663.35*scale_mm2*gtoKg}"
+                  iyz="${0.27*scale_mm2*gtoKg}"
+                  izz="${180608.09*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece12.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="green"/>
+        <origin rpy="${pi/2} ${-pi/2} 0" xyz="0 0 ${-160*scale_mm}"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece12.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} ${-pi/2} 0" xyz="0 0 ${-160*scale_mm}"/>
+      </collision>
+    </link>
+
+    <xacro:servo_joint parent="servo2" child="arm1-piece12"/>
+
+    <link name="arm1-piece15">
+      <inertial>
+        <origin rpy="${pi/2} ${pi/2} 0" xyz="${-0.04*scale_mm} ${0.00*scale_mm} ${81.56*scale_mm}" />
+        <mass value="${40*gtoKg}" />
+        <inertia  ixx="${5561.55*scale_mm2*gtoKg}"
+                  ixy="${-3.55*scale_mm2*gtoKg}"
+                  ixz="${-41.58*scale_mm2*gtoKg}"
+                  iyy="${117353.89*scale_mm2*gtoKg}"
+                  iyz="${0.00*scale_mm2*gtoKg}"
+                  izz="${122490.38*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece15.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="cyan"/>
+        <origin rpy="${pi/2} ${pi/2} 0" xyz="0 0 ${160*scale_mm}"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece15.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} ${pi/2} 0" xyz="0 0 ${160*scale_mm}"/>
+      </collision>
+    </link>
+
+    <xacro:servo_mimic parent="servo3" child="arm1-piece15" mimic="servo2_arm1-piece12_joint" multiplier="-1"/>
+
+    <xacro:piece13 name="arm1-piece13-1"/>
+
+    <joint name="arm1-piece12_arm1-piece13-1_joint" type="fixed">
+      <parent link="arm1-piece12"/>
+      <child link="arm1-piece13-1"/>
+      <origin rpy="0 0 0" xyz="0 ${30*scale_mm} ${-130*scale_mm}"/>
+    </joint>
+
+    <xacro:piece13 name="arm1-piece13-2"/>
+
+    <joint name="arm1-piece12_arm1-piece13-2_joint" type="fixed">
+      <parent link="arm1-piece12"/>
+      <child link="arm1-piece13-2"/>
+      <origin rpy="0 0 0" xyz="${11*scale_mm} ${30*scale_mm} ${-68*scale_mm}"/>
+    </joint>
+
+    <xacro:piece13 name="arm1-piece13-3"/>
+
+    <joint name="arm1-piece12_arm1-piece13-3_joint" type="fixed">
+      <parent link="arm1-piece12"/>
+      <child link="arm1-piece13-3"/>
+      <origin rpy="0 0 0" xyz="${-11*scale_mm} ${30*scale_mm} ${-68*scale_mm}"/>
+    </joint>
+
+    <xacro:radialBearing name="radialBearing1"/>
+
+    <joint name="arm1-piece15_radialBearing1_joint" type="fixed">
+      <parent link="arm1-piece15"/>
+      <child link="radialBearing1"/>
+      <origin rpy="0 0 0" xyz="0 ${-1*scale_mm} ${160*scale_mm}"/>
+    </joint>
+
+    <xacro:servo name="servo4"/>
+
+    <joint name="arm1-piece12_servo4_joint" type="fixed">
+      <parent link="arm1-piece12"/>
+      <child link="servo4"/>
+      <origin rpy="${pi} ${-pi/2} 0" xyz="0 ${(60-23.5)*scale_mm} ${-170.09*scale_mm}"/>
+    </joint>
+
+  <!-- End Arm1 -->
+
+
+  <!-- Arm2 -->
+    <link name="arm2-piece16">
+      <inertial>
+        <origin rpy="${pi/2} 0 0" xyz="${(-120+61.38)*scale_mm} ${0*scale_mm} ${-0.04*scale_mm}" />
+        <mass value="${35*gtoKg}" />
+        <inertia  ixx="${4855.15*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${-34.37*scale_mm2*gtoKg}"
+                  iyy="${64452.74*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${68936.39*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece16.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="pink"/>
+        <origin rpy="${pi/2} 0 0" xyz="${-120*scale_mm} 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece16.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${pi/2} 0 0" xyz="${-120*scale_mm} 0 0"/>
+      </collision>
+    </link>
+
+    <xacro:servo_joint parent="servo4" child="arm2-piece16" offset="39.5"/>
+
+    <xacro:radialBearing name="radialBearing3"/>
+
+    <joint name="arm2-piece16_radialBearing3_joint" type="fixed">
+      <parent link="arm2-piece16"/>
+      <child link="radialBearing3"/>
+      <origin rpy="0 0 0" xyz="${-120*scale_mm} ${-5*scale_mm} 0"/>
+    </joint>
+
+    <xacro:radialBearing name="radialBearing2"/>
+
+    <xacro:radialBearing_joint parent="radialBearing1" child="radialBearing2" mimic="servo4_arm2-piece16_joint" multiplier="1"/>
+
+    <link name="arm2-piece14">
+      <inertial>
+        <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0 ${(120-64.05)*scale_mm}" />
+        <mass value="${30*gtoKg}" />
+        <inertia  ixx="${4703.38*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${-2.07*scale_mm2*gtoKg}"
+                  iyy="${54489.25*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${58871.61*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece14.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="turcoise"/>
+        <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0 ${120*scale_mm}"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece14.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0 ${120*scale_mm}"/>
+      </collision>
+
+    </link>
+
+    <joint name="arm1-piece14_radialBearing2_joint" type="fixed">
+      <parent link="radialBearing2"/>
+      <child link="arm2-piece14"/>
+      <origin rpy="0 ${pi/2} 0" xyz="0 ${0*scale_mm} 0"/>
+    </joint>
+
+    <xacro:servo name="servo5"/>
+
+    <joint name="arm2-piece14_servo5_joint" type="fixed">
+      <parent link="arm2-piece14"/>
+      <child link="servo5"/>
+      <origin rpy="${pi} ${-pi/2} 0" xyz="0 ${36.50*scale_mm} ${(120-10)*scale_mm}"/>
+    </joint>
+
+    <xacro:piece13 name="arm2-piece13-1"/>
+
+    <joint name="arm2-piece14_arm2-piece13-1_joint" type="fixed">
+      <parent link="arm2-piece14"/>
+      <child link="arm2-piece13-1"/>
+      <origin rpy="0 0 0" xyz="${-11*scale_mm} ${30*scale_mm} ${60*scale_mm}"/>
+    </joint>
+
+    <xacro:piece13 name="arm2-piece13-2"/>
+
+    <joint name="arm2-piece14_arm2-piece13-2_joint" type="fixed">
+      <parent link="arm2-piece14"/>
+      <child link="arm2-piece13-2"/>
+      <origin rpy="0 0 0" xyz="${11*scale_mm} ${30*scale_mm} ${60*scale_mm}"/>
+    </joint>
+  <!-- End Arm2 -->
+
+
+  <!-- Arm3 -->
+    <link name="arm3-piece17">
+      <inertial>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="${23.15*scale_mm} ${0*scale_mm} ${-0.27*scale_mm}" />
+        <mass value="${17*gtoKg}" />
+        <inertia  ixx="${2387.42*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${78.26*scale_mm2*gtoKg}"
+                  iyy="${8941.61*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${11160.24*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece17.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="pink_light"/>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece17.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
+      </collision>
+    </link>
+
+    <xacro:servo_joint parent="servo5" child="arm3-piece17"/>
+
+    <xacro:radialBearing name="radialBearing4"/>
+
+    <xacro:radialBearing_joint parent="radialBearing3" child="radialBearing4" mimic="servo5_arm3-piece17_joint" multiplier="-1" offset="12.5"/>
+
+    <link name="arm3-piece18">
+      <inertial>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="${-24.25*scale_mm} ${0*scale_mm} ${-0.25*scale_mm}" />
+        <mass value="${17*gtoKg}" />
+        <inertia  ixx="${2482.79*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${-91.55*scale_mm2*gtoKg}"
+                  iyy="${8895.24*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${11204.45*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece18.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="cyan_light"/>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece18.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="${-pi/2} 0 ${pi}" xyz="0 0 0"/>
+      </collision>
+    </link>
+
+    <joint name="radialBearing4_arm3-piece18_joint" type="fixed">
+      <parent link="radialBearing4"/>
+      <child link="arm3-piece18"/>
+      <origin rpy="0 ${pi/2} 0" xyz="0 0 0"/>
+    </joint>
+
+    <link name="arm3-piece19">
+      <inertial>
+        <origin xyz="${10*scale_mm} ${0*scale_mm} ${0.01*scale_mm}" />
+        <mass value="${22*gtoKg}" />
+        <inertia  ixx="${4235.92*scale_mm2*gtoKg}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${19380.83*scale_mm2*gtoKg}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${21869.12*scale_mm2*gtoKg}" />
+      </inertial>
+
+      <visual>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece19.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <material name="red_light"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://jb2a_description/meshes/Piece19.STL" scale="${scale} ${scale} ${scale}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+      </collision>
+
+    </link>
+
+    <joint name="arm3-piece17_arm3-piece19_joint" type="fixed">
+      <parent link="arm3-piece17"/>
+      <child link="arm3-piece19"/>
+      <origin rpy="${-pi/2} 0 ${-pi/2}" xyz="${57*scale_mm} ${-31*scale_mm} ${0*scale_mm}"/>
+    </joint>
+
+    <xacro:servo name="servo6"/>
+
+    <joint name="arm2-piece14_servo6_joint" type="fixed">
+      <parent link="arm3-piece19"/>
+      <child link="servo6"/>
+      <origin rpy="${pi/2} 0 ${pi}" xyz="${10*scale_mm} 0 ${-32.50*scale_mm}"/>
+    </joint>
+   <!-- End Arm4 -->
+
+   <!-- Simple hand -->
+
+    <link name="fakeHand">
+      <inertial>
+        <origin rpy="${pi/2} 0 0" xyz="${0*scale_mm} ${25*scale_mm} ${0*scale_mm}" />
+        <mass value="${15*gtoKg}" />
+        <inertia  ixx="${1/2*0.5*0.5*1.5e-2 + 1/4*0.2*0.2*1.5e-2}"
+                  ixy="${0*scale_mm2*gtoKg}"
+                  ixz="${0*scale_mm2*gtoKg}"
+                  iyy="${1/2*0.5*0.5*1.5e-2 + 1/4*0.2*0.2*1.5e-2}"
+                  iyz="${0*scale_mm2*gtoKg}"
+                  izz="${1/2*0.2*0.2*1.5e-2}" />
+      </inertial>
+
+      <visual>
+         <geometry>
+           <cylinder length="${50*scale_mm}" radius="${20*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+         </geometry>
+         <material name="grey"/>
+         <origin rpy="${pi/2} 0 0" xyz="0 ${20*scale_mm} 0"/>
+       </visual>
+
+      <collision>
+         <geometry>
+           <cylinder length="${50*scale_mm}" radius="${20*scale_mm}" scale="${scale} ${scale} ${scale}"/>
+         </geometry>
+         <origin rpy="${pi/2} 0 0" xyz="0 ${20*scale_mm} 0"/>
+       </collision>
+
+     </link>
+
+    <xacro:servo_joint parent="servo6" child="fakeHand"/>
+   <!-- End hand -->
+
+
+</robot>

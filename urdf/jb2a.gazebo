@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="settings">
+    <selfCollide>True</selfCollide>
+    <turnGravityOff>False</turnGravityOff>
+  </xacro:macro>
+
+  <xacro:macro name="black" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Black</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="red" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Red</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="grey" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Grey</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="blue" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Blue</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="green" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Green</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="yellow" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Yellow</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="orange" params="name">
+    <gazebo reference="${name}">
+      <material>Gazebo/Orange</material>
+      <xacro:settings/>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/jb2a</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+  <!-- Base -->
+  <xacro:grey name="base_link"/>
+
+
+  <!-- ball bearing -->
+  <xacro:black name="ball_bearings1"/>
+  <xacro:black name="ball_bearings2"/>
+
+  <!-- Servos -->
+  <xacro:black name="servo1"/>
+  <xacro:black name="servo2"/>
+  <xacro:black name="servo3"/>
+  <xacro:black name="servo4"/>
+  <xacro:black name="servo5"/>
+  <xacro:black name="servo6"/>
+
+  <!-- Radial Bearings -->
+  <xacro:grey name="radialBearing1"/>
+  <xacro:grey name="radialBearing2"/>
+  <xacro:grey name="radialBearing3"/>
+  <xacro:grey name="radialBearing4"/>
+
+  <!-- Piece 13 -->
+  <xacro:red name="arm1-piece13-1"/>
+  <xacro:red name="arm1-piece13-2"/>
+  <xacro:red name="arm1-piece13-3"/>
+  <xacro:red name="arm2-piece13-1"/>
+  <xacro:red name="arm2-piece13-2"/>
+
+  <!-- rotation ensemble -->
+  <xacro:grey name="piece100"/>
+  <xacro:grey name="piece11"/>
+  <xacro:grey name="piece11sym"/>
+
+  <!-- Arm 1 -->
+  <xacro:green name="arm1-piece12"/>
+  <xacro:green name="arm1-piece15"/>
+
+  <!-- Arm 2 -->
+  <xacro:orange name="arm2-piece14"/>
+  <xacro:orange name="arm2-piece16"/>
+
+  <!-- Arm 3 -->
+  <xacro:blue name="arm3-piece17"/>
+  <xacro:blue name="arm3-piece19"/>
+  <xacro:blue name="arm3-piece18"/>
+
+  <!-- Fake hand -->
+  <xacro:yellow name="fakeHand"/>
+
+</robot>
