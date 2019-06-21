@@ -1,0 +1,8 @@
+# Goal Definition
+float32 angle
+---
+# Result Definition
+float32 final_angle
+---
+# Feedback Definition
+float32 current_angle
