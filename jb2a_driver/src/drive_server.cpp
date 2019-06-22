@@ -1,3 +1,15 @@
+/**
+ * @Author: Nicolay Pierre <pierre>
+ * @Date:   2019-06-21T13:10:33+02:00
+ * @Email:  nicolaypierre.95@gmail.com
+ * @Project: JB2A
+ * @Filename: drive_server.cpp
+ * @Last modified by:   pierre
+ * @Last modified time: 2019-06-21T13:18:31+02:00
+ */
+
+
+
 #include <jb2a_driver/driver_server.h>
 #include <ros/console.h>
 
@@ -8,7 +20,7 @@ DriverServer::DriverServer(std::string name) :
   // Set logger level to debug.
   if( ros::console::set_logger_level(ROSCONSOLE_DEFAULT_NAME, ros::console::levels::Debug) )
     ros::console::notifyLoggerLevelsChanged();
-  
+
   ROS_DEBUG_STREAM("Start as server.");
   ROS_INFO_STREAM("Starting drive server :" << name_);
   as_.start();
