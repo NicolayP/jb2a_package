@@ -1,3 +1,15 @@
+<!--
+@Author: Nicolay Pierre <pierre>
+@Date:   2019-06-18T14:10:56+02:00
+@Email:  nicolaypierre.95@gmail.com
+@Project: JB2A
+@Filename: package.xml
+@Last modified by:   pierre
+@Last modified time: 2019-06-21T13:26:29+02:00
+-->
+
+
+
 <package>
   <name>jb2a_description</name>
   <version>0.3.0</version>
@@ -7,7 +19,7 @@
 
   <maintainer email="nicolaypierre.95@gmail.com">Pierre Nicolay</maintainer>
 
-  <license>BSD</license>
+  <license>GPLv3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roslaunch</build_depend>

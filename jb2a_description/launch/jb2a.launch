@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- send katana urdf to param server -->
+<param name="/robot_description" command="/opt/ros/kinetic/bin/xacro/xacro --inorder $(find jb2a_description)/urdf/jb2a.urdf.xarco" />
+</launch>
