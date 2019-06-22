@@ -8,8 +8,8 @@
   <xacro:property name="scale_mm" value="${1e-3*scale}"/>
   <xacro:property name="scale_mm2" value="${scale_mm*scale_mm}"/>
   <xacro:property name="gtoKg" value="1e-3"/>
-  <xacro:property name="angle_lim_low" value="${8/18*pi}"/>
-  <xacro:property name="angle_lim_high" value="${-8/18*pi}"/>
+  <xacro:property name="angle_lim_low" value="${-8/18*pi}"/>
+  <xacro:property name="angle_lim_high" value="${8/18*pi}"/>
 
   <!-- Used for every servo except the first one as it is the child in the joint relation -->
   <xacro:macro name="servo" params="name">
@@ -40,10 +40,11 @@
       </collision>
 
     </link>
+
   </xacro:macro>
 
-  <xacro:macro name="servo_joint" params="parent child offset:=37.5">
-    <joint name="${parent}_${child}_joint" type="revolute">
+  <xacro:macro name="servo_joint" params="parent arm child offset:=37.5">
+    <joint name="${parent}_${arm}_joint" type="revolute">
       <parent link="${parent}"/>
       <child link="${child}"/>
       <origin rpy="0 0 0" xyz="${10.09*scale_mm} ${(offset+10)*scale_mm} ${0*scale_mm}"/>
@@ -51,6 +52,16 @@
       <limit effort="1000.0" lower="${angle_lim_low}" upper="${angle_lim_high}" velocity="0.5"/>
       <dynamics friction="0.7"/>
     </joint>
+
+    <transmission name="${parent}_${child}_trans">
+      <type> transmission_interface/SimpleTransmission</type>
+      <joint name="${parent}_${arm}_joint">
+	       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${parent}_${child}_servo">
+	       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </actuator>
+    </transmission>
   </xacro:macro>
 
   <xacro:macro name="servo_mimic" params="parent child mimic multiplier">
@@ -290,6 +301,16 @@
       <dynamics friction="0.7"/>
     </joint>
 
+    <transmission name="base_servo1_trans">
+      <type> transmission_interface/SimpleTransmission</type>
+      <joint name="base_servo1_joint">
+	       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="base_servo1_servo">
+	       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </actuator>
+    </transmission>
+
     <link name="piece100">
       <inertial>
         <origin xyz="0 ${1.04*scale_mm} ${12.83*scale_mm}" />
@@ -441,7 +462,7 @@
       </collision>
     </link>
 
-    <xacro:servo_joint parent="servo2" child="arm1-piece12"/>
+    <xacro:servo_joint parent="servo2" arm="arm1" child="arm1-piece12"/>
 
     <link name="arm1-piece15">
       <inertial>
@@ -545,7 +566,7 @@
       </collision>
     </link>
 
-    <xacro:servo_joint parent="servo4" child="arm2-piece16" offset="39.5"/>
+    <xacro:servo_joint parent="servo4" arm="arm2" child="arm2-piece16" offset="39.5"/>
 
     <xacro:radialBearing name="radialBearing3"/>
 
@@ -649,7 +670,7 @@
       </collision>
     </link>
 
-    <xacro:servo_joint parent="servo5" child="arm3-piece17"/>
+    <xacro:servo_joint parent="servo5" arm="arm3" child="arm3-piece17"/>
 
     <xacro:radialBearing name="radialBearing4"/>
 
@@ -764,7 +785,7 @@
 
      </link>
 
-    <xacro:servo_joint parent="servo6" child="fakeHand"/>
+    <xacro:servo_joint parent="servo6" arm="hand" child="fakeHand"/>
    <!-- End hand -->
 
 
