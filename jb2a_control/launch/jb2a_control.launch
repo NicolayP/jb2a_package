@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<launch>
+  <rosparam file="$(find jb2a_control)/config/jb2a_control.yaml" command="load"/>
+
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+	      output="screen" ns="/jb2a" args="base_servo1_joint_position_controller
+                                         servo2_arm1_joint_position_controller
+                                         servo4_arm2_joint_position_controller
+                                         servo5_arm3_joint_position_controller
+                                         servo6_hand_joint_position_controller
+                                         joint_state_controller"/>
+      <!--
+					 servo2_arm1_joint_position_controller
+					 servo4_arm2_joint_position_controller
+					 servo5_arm3_joint_position_controller
+					 servo6_hand_joint_position_controller"/>
+					 -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+    <remap from="/joint_states" to="/jb2a/joint_states" />
+  </node>
+
+</launch>
